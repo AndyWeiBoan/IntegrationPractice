@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -8,23 +10,23 @@ using Web;
 using Xunit;
 
 namespace Test {
-    public class CustomWebAppFactory : IClassFixture<WebApplicationFactory<Startup>> {
+    public abstract class CustomWebFactory
+        : IClassFixture<WebApplicationFactory<Startup>> {
 
-        private WebApplicationFactory<Startup> _webHost;
-        protected readonly WebApplicationFactory<Startup> _factory;
+        //public WebApplicationFactory<Startup> _webHost;
+        private readonly WebApplicationFactory<Startup> _factory;
 
-        public CustomWebAppFactory(WebApplicationFactory<Startup> factory) {
+        public CustomWebFactory(WebApplicationFactory<Startup> factory) {
             _factory = factory;
-            _webHost = _factory.WithWebHostBuilder(builder=> {});
+            //_webHost = _factory;
         }
+        //protected abstract IServiceCollection ConfigureService();
+        //protected HttpClient CreateClient() {
+        //    return _factory.WithWebHostBuilder(builder => {
+        //        builder.UseEnvironment("Testing");
+        //        builder.ConfigureTestServices(s=> ConfigureService());
+        //    }).CreateClient();
 
-        protected virtual IServiceCollection ConfigureService() => new ServiceCollection();
-
-        protected void ConfigureWebHost() {
-            _webHost = _factory.WithWebHostBuilder(builder => {
-                builder.UseEnvironment("Test");
-                builder.ConfigureTestServices((service)=> ConfigureService());
-            });
-        }
+        //}
     }
 }
