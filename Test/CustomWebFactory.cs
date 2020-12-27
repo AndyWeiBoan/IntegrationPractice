@@ -28,5 +28,12 @@ namespace Test {
         //    }).CreateClient();
 
         //}
+
+        protected HttpClient CreateClient(Action<IServiceCollection> s) {
+            return _factory.WithWebHostBuilder(builder => {
+                builder.UseEnvironment("Testing");
+                builder.ConfigureServices(s);
+            }).CreateClient();
+        }
     }
 }
